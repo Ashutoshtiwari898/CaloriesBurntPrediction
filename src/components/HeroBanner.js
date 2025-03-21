@@ -13,12 +13,27 @@ const HeroBanner = () => (
     <Typography fontSize="22px" fontFamily="Alegreya" lineHeight="35px">
       Check out the most effective exercises personalized to you
     </Typography>
-    <Stack>
-      <a href="#exercises" style={{ marginTop: '45px', textDecoration: 'none', width: '200px', textAlign: 'center', background: '#FF2625', padding: '14px', fontSize: '22px', textTransform: 'none', color: 'white', borderRadius: '4px' }}>Explore Exercises</a>
-    </Stack>
+    <Stack direction="row" spacing={2}>
+  <a href="#exercises" style={{ 
+    textDecoration: 'none', width: '200px', textAlign: 'center', 
+    background: '#FF2625', padding: '14px', fontSize: '22px', 
+    textTransform: 'none', color: 'white', borderRadius: '4px' 
+  }}>
+    Explore Exercises
+  </a>
+
+  <a href="#Calories" style={{ 
+    textDecoration: 'none', width: '200px', textAlign: 'center', 
+    background: '#FF2625', padding: '14px', fontSize: '22px', 
+    textTransform: 'none', color: 'white', borderRadius: '4px' 
+  }}>
+    Track Calories
+  </a>
+</Stack>
     <Typography fontWeight={600} color="#FF2625" sx={{ opacity: '0.1', display: { lg: 'block', xs: 'none' }, fontSize: '200px' }}>
       Exercise
     </Typography>
+    
     <img src={HeroBannerImage} alt="hero-banner" className="hero-banner-img" />
   </Box>
 );

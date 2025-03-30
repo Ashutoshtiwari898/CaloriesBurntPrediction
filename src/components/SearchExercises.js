@@ -10,32 +10,53 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
   useEffect(() => {
     const fetchExercisesData = async () => {
-      const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
-
-      setBodyParts(['all', ...bodyPartsData]);
+      try {
+        const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
+        if (Array.isArray(bodyPartsData)) {
+          setBodyParts(['all', ...bodyPartsData]);
+        } else {
+          console.error("Error: bodyPartsData is not an array", bodyPartsData);
+        }
+      } catch (error) {
+        console.error("Failed to fetch body parts:", error);
+      }
     };
-
+  
     fetchExercisesData();
   }, []);
+  
 
   const handleSearch = async () => {
-    if (search) {
-      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
-
-      const searchedExercises = exercisesData.filter(
-        (item) => item.name.toLowerCase().includes(search)
-               || item.target.toLowerCase().includes(search)
-               || item.equipment.toLowerCase().includes(search)
-               || item.bodyPart.toLowerCase().includes(search),
+    if (!search || search.trim() === '') return; // Prevents empty searches
+  
+    try {
+      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises',
+        exerciseOptions
       );
-
+  
+      if (!Array.isArray(exercisesData)) {
+        console.error("Error: exercisesData is not an array", exercisesData);
+        return;
+      }
+  
+      const lowerCaseSearch = search.toLowerCase();
+      
+      const searchedExercises = exercisesData.filter((item) => 
+        item.name?.toLowerCase().includes(lowerCaseSearch) || 
+        item.target?.toLowerCase().includes(lowerCaseSearch) || 
+        item.equipment?.toLowerCase().includes(lowerCaseSearch) || 
+        item.bodyPart?.toLowerCase().includes(lowerCaseSearch)
+      );
+  
       window.scrollTo({ top: 1800, left: 100, behavior: 'smooth' });
-
+  
       setSearch('');
       setExercises(searchedExercises);
+    } catch (error) {
+      console.error('Error fetching exercises:', error);
     }
   };
-
+  
   return (
     <Stack alignItems="center" mt="37px" justifyContent="center" p="20px">
       <Typography fontWeight={700} sx={{ fontSize: { lg: '44px', xs: '30px' } }} mb="49px" textAlign="center">
